@@ -41,7 +41,7 @@ def main():
     )
     parser.add_argument(
         "--suffix",
-        default=".JPEG",
+        default=".jpg",
         help="the suffix of the images in the image folder.",
     )
     parser.add_argument(

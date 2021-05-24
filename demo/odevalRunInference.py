@@ -17,7 +17,7 @@ def run_inference_vid():
     # output_sfx = '_ILSVRC2015_train_00071005'
     confidence_threshold = 0.7  #
     output_folder = None
-    file_suffix = '.JPEG'
+    file_suffix = '.jpg'
     # max_num_frames = -1
     max_num_frames = 80
 

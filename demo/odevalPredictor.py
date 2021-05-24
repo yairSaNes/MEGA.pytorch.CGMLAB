@@ -196,7 +196,7 @@ class VideoProcessor(object):
     def cvt2frames(self,
                    frame_dir,
                    file_start=0,
-                   filename_tmpl='{:06d}.jpg',
+                   filename_tmpl='{:07d}.jpg',
                    start=0,
                    max_num=0):
         """Convert a video to frame images
@@ -314,6 +314,7 @@ class Resize(object):
 
 
 class VIDDemo(object):
+    '''
     CATEGORIES = ['__background__',  # always index 0
                   'airplane', 'antelope', 'bear', 'bicycle',
                   'bird', 'bus', 'car', 'cattle',
@@ -323,6 +324,12 @@ class VIDDemo(object):
                   'red_panda', 'sheep', 'snake', 'squirrel',
                   'tiger', 'train', 'turtle', 'watercraft',
                   'whale', 'zebra']
+    '''
+
+    CATEGORIES = ['ignored-regions',
+                  'pedestrian','people','bicycle','car',
+                  'van','truck','tricycle','awning-tricycle',
+                  'bus','motor','others']
 
     def __init__(
             self,
@@ -425,13 +432,14 @@ class VIDDemo(object):
 
         return image_list
 
-    def run_on_image_folder(self, image_folder, suffix='.JPEG'):
+    # def run_on_image_folder(self, image_folder, suffix='.JPEG'):
+    def run_on_image_folder(self, image_folder, suffix='.jpg'):
         image_names = glob.glob(image_folder + '/*' + suffix)
         image_names = sorted(image_names)
 
         img_dir = "%s" + suffix
         frame_seg_len = len(image_names)
-        pattern = image_folder + "/%06d"
+        pattern = image_folder + "/%07d"
 
         images_with_boxes = []
 
@@ -496,14 +504,15 @@ class VIDDemo(object):
                 images_with_boxes.append(image_with_boxes)
 
                 # save image with predicted bboxes
-                cv2.imwrite(os.path.join(self.output_folder, "%06d.jpg" % frame_id), image_with_boxes)
+                cv2.imwrite(os.path.join(self.output_folder, "%07d.jpg" % frame_id), image_with_boxes)
 
             else:
                 raise NotImplementedError("method {} is not implemented.".format(self.method))
 
         return images_with_boxes
 
-    def run_on_image_folder_VID(self, image_folder, suffix='.JPEG', max_num_frames=None):
+    # def run_on_image_folder_VID(self, image_folder, suffix='.JPEG', max_num_frames=None):
+    def run_on_image_folder_VID(self, image_folder, suffix='.jpg', max_num_frames=None):
 
         # initialize analyzer
         self.analyzer = Analyzer(output_dir=self.output_folder,
@@ -523,13 +532,13 @@ class VIDDemo(object):
 
         img_dir = "%s" + suffix
         frame_seg_len = len(image_names)
-        pattern_image_name = "/%06d"
+        pattern_image_name = "/%07d"
         pattern = image_folder + pattern_image_name
 
         # annotation folder
         anno_folder = os.path.join(image_folder, 'annotations')
         if os.path.exists(anno_folder):
-            pattern_anno = anno_folder + "/%06d" + '.xml'
+            pattern_anno = anno_folder + "/%07d" + '.xml'
         else:
             anno_folder = None
 
@@ -616,7 +625,7 @@ class VIDDemo(object):
                 self.analyzer.update_analyzer(key=frame_id, prediction=predictions, ground_truth=anno, image_path=image_path, image=None, analyze_performance=True)
 
                 # prepare image for video
-                image_out_name = os.path.basename(pattern_image_name % frame_id + '.JPEG')  #'.png')
+                image_out_name = os.path.basename(pattern_image_name % frame_id + '.jpg') #'.JPEG')  #'.png')
                 image_out_path = os.path.join(output_image_dir, image_out_name)
                 image_with_boxes = self.analyzer.visualize_example(key=frame_id,
                                                               image=image_analyzer,
@@ -837,7 +846,7 @@ class VIDDemo(object):
 
     def generate_images(self, visualization_results):
         for frame_id in range(len(visualization_results)):
-            cv2.imwrite(os.path.join(self.output_folder, "%06d.jpg" % frame_id), visualization_results[frame_id])
+            cv2.imwrite(os.path.join(self.output_folder, "%07d.jpg" % frame_id), visualization_results[frame_id])
 
     def generate_video(self, visualization_results):
         self.vprocessor.frames2videos(visualization_results, self.output_folder)

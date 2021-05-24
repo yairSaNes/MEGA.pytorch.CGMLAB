@@ -187,7 +187,7 @@ class VideoProcessor(object):
     def cvt2frames(self,
                    frame_dir,
                    file_start=0,
-                   filename_tmpl='{:06d}.jpg',
+                   filename_tmpl='{:07d}.jpg',
                    start=0,
                    max_num=0):
         """Convert a video to frame images
@@ -423,7 +423,18 @@ class VIDDemo(object):
 
         return image_list
 
-    def run_on_image_folder(self, image_folder, suffix='.JPEG'):
+    def run_on_video(self, video_path):
+        if not os.path.isfile(video_path):
+            raise FileNotFoundError('file "{}" does not exist'.format(video_path))
+        self.vprocessor = VideoProcessor(video_path)
+        tmpdir = tempfile.mkdtemp()
+        self.vprocessor.cvt2frames(tmpdir)
+        results = self.run_on_image_folder(tmpdir, suffix='.jpg')
+
+        return results
+
+    # def run_on_image_folder(self, image_folder, suffix='.JPEG'):
+    def run_on_image_folder(self, image_folder, suffix='.jpg'):
         image_names = glob.glob(image_folder + '/*' + suffix)
         image_names = sorted(image_names)
 
@@ -494,16 +505,6 @@ class VIDDemo(object):
                 raise NotImplementedError("method {} is not implemented.".format(self.method))
 
         return images_with_boxes
-
-    def run_on_video(self, video_path):
-        if not os.path.isfile(video_path):
-            raise FileNotFoundError('file "{}" does not exist'.format(video_path))
-        self.vprocessor = VideoProcessor(video_path)
-        tmpdir = tempfile.mkdtemp()
-        self.vprocessor.cvt2frames(tmpdir)
-        results = self.run_on_image_folder(tmpdir, suffix='.jpg')
-
-        return results
 
     def run_on_image(self, image, infos=None):
         """
