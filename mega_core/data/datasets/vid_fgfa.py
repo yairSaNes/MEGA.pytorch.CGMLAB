@@ -24,7 +24,8 @@ class VIDFGFADataset(VIDDataset):
         if hasattr(self, "pattern"):
             offsets = np.random.choice(cfg.MODEL.VID.FGFA.MAX_OFFSET - cfg.MODEL.VID.FGFA.MIN_OFFSET + 1, cfg.MODEL.VID.FGFA.REF_NUM, replace=False) + cfg.MODEL.VID.FGFA.MIN_OFFSET
             for i in range(len(offsets)):
-                ref_id = min(max(self.frame_seg_id[idx] + offsets[i], 0), self.frame_seg_len[idx] - 1)
+                ref_id = min(max(self.frame_seg_id[idx] + offsets[i], 1), self.frame_seg_len[idx] - 1)
+                # ref_id = min(max(self.frame_seg_id[idx] + offsets[i], 0), self.frame_seg_len[idx] - 1)
                 ref_filename = self.pattern[idx] % ref_id
                 img_ref = Image.open(self._img_dir % ref_filename).convert("RGB")
                 img_refs.append(img_ref)

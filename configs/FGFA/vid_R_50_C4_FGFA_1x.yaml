@@ -8,8 +8,9 @@ MODEL:
   BACKBONE:
     CONV_BODY: "R-50-C4"
   ROI_BOX_HEAD:
+    NUM_CLASSES: 12
     FEATURE_EXTRACTOR: "ResNetConv52MLPFeatureExtractor"
     PREDICTOR: "FPNPredictor"
 DATASETS:
-  TRAIN: ("DET_train_30classes", "VID_train_15frames")
+  TRAIN: ("VID_VIS_train_15frames",)
   TEST: ("VID_val_videos",)

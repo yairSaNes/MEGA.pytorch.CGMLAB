@@ -173,6 +173,17 @@ class DatasetCatalog(object):
             "img_dir": "ILSVRC2015/Data/VID",
             "anno_path": "ILSVRC2015/Annotations/VID",
             "img_index": "ILSVRC2015/ImageSets/VID_val_videos.txt"
+        },
+        ##############################################
+        "VID_VIS_train_15frames": {
+            "img_dir": "ILSVRC2015_VIS/Data/VID",
+            "anno_path": "ILSVRC2015_VIS/Annotations/VID",
+            "img_index": "ILSVRC2015_VIS/ImageSets/VID_train_15frames_1folder.txt"
+        },
+        "VID_VIS_val_frames": {
+            "img_dir": "ILSVRC2015_VIS/Data/VID",
+            "anno_path": "ILSVRC2015_VIS/Annotations/VID",
+            "img_index": "ILSVRC2015_VIS/ImageSets/VID_val_frames.txt"
         }
     }
 

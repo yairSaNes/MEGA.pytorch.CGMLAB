@@ -73,9 +73,9 @@ def main():
         synchronize()
 
     BASE_CONFIG = "configs/BASE_RCNN_{}gpu.yaml".format(num_gpus)
-    cfg.merge_from_file(BASE_CONFIG)
-    cfg.merge_from_file(args.config_file)
-    cfg.merge_from_list(args.opts)
+    cfg.merge_from_file(BASE_CONFIG)        #   base config file
+    cfg.merge_from_file(args.config_file)   #   specified config file
+    cfg.merge_from_list(args.opts)          #   output from previous tests (?)
     cfg.freeze()
 
     save_dir = ""

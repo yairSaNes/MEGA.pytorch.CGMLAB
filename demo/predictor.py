@@ -305,6 +305,7 @@ class Resize(object):
 
 
 class VIDDemo(object):
+    '''
     CATEGORIES = ['__background__',  # always index 0
                   'airplane', 'antelope', 'bear', 'bicycle',
                   'bird', 'bus', 'car', 'cattle',
@@ -314,6 +315,12 @@ class VIDDemo(object):
                   'red_panda', 'sheep', 'snake', 'squirrel',
                   'tiger', 'train', 'turtle', 'watercraft',
                   'whale', 'zebra']
+    '''
+
+    CATEGORIES = ['ignored-regions',
+                  'pedestrian','people','bicycle','car',
+                  'van','truck','tricycle','awning-tricycle',
+                  'bus','motor','others']
 
     def __init__(
             self,
@@ -422,7 +429,7 @@ class VIDDemo(object):
 
         img_dir = "%s" + suffix
         frame_seg_len = len(image_names)
-        pattern = image_folder + "/%06d"
+        pattern = image_folder + "/%07d"
 
         images_with_boxes = []
 
@@ -615,7 +622,7 @@ class VIDDemo(object):
 
     def generate_images(self, visualization_results):
         for frame_id in range(len(visualization_results)):
-            cv2.imwrite(os.path.join(self.output_folder, "%06d.jpg" % frame_id), visualization_results[frame_id])
+            cv2.imwrite(os.path.join(self.output_folder, "%07d.jpg" % frame_id), visualization_results[frame_id])
 
     def generate_video(self, visualization_results):
         self.vprocessor.frames2videos(visualization_results, self.output_folder)
